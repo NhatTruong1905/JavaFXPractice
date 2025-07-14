@@ -5,6 +5,7 @@
 package com.ndnt.utils;
 
 import com.ndnt.apppractice.App;
+import com.ndnt.themes.ThemeManager;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,8 +34,15 @@ public class MyStage {
     }
 
     public void showStage(String fxml) throws IOException {
-        scene = new Scene(new FXMLLoader(App.class.getResource(fxml)).load());
+        if (scene == null) {
+            scene = new Scene(new FXMLLoader(App.class.getResource(fxml)).load());
+        } else {
+            scene.setRoot(new FXMLLoader(App.class.getResource(fxml)).load());
+        }
+
+        ThemeManager.applyTheme(scene); // Đồng bộ cảnh diễn ở mọi giao diện 
+
         stage.setScene(scene);
-        stage.showAndWait();
+        stage.show();
     }
 }
