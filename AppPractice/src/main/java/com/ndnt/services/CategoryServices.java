@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class CategoryServices {
 
-    public List<Category> getCates() throws SQLException, ClassNotFoundException {
+    public List<Category> getCates() throws SQLException, ClassNotFoundException{
         Connection conn = JdbcConnector.getInstance().connect();
 
         Statement stm = conn.createStatement();

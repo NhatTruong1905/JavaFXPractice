@@ -6,4 +6,5 @@ module com.ndnt.apppractice {
 
     opens com.ndnt.apppractice to javafx.fxml;
     exports com.ndnt.apppractice;
+    exports com.ndnt.pojo;
 }

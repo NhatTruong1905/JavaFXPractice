@@ -19,11 +19,15 @@ import com.ndnt.services.CategoryServices;
 import com.ndnt.services.LevelServices;
 import com.ndnt.services.QuestionServices;
 import com.ndnt.utils.MyAlert;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -44,6 +48,11 @@ public class QuestionsController implements Initializable {
     private ComboBox<Category> cbCates;
     @FXML
     private ComboBox<Level> cbLevels;
+    @FXML
+    private TableView tbQuestion;
+    @FXML
+    private TextField txtSearch;
+
     private static final CategoryServices catServices = new CategoryServices();
     private static final LevelServices levelServices = new LevelServices();
     private static final QuestionServices questionServices = new QuestionServices();
@@ -51,13 +60,23 @@ public class QuestionsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-
             this.cbCates.setItems(FXCollections.observableArrayList(catServices.getCates()));
             this.cbLevels.setItems(FXCollections.observableArrayList(levelServices.getLevels()));
 
+            this.loadColumns();
+            this.tbQuestion.setItems(FXCollections.observableList(questionServices.getQuestions()));
         } catch (ClassNotFoundException | SQLException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
+
+        this.txtSearch.textProperty().addListener(c -> {
+            try {
+                this.tbQuestion.getItems().clear();
+                this.tbQuestion.setItems(FXCollections.observableList(questionServices.getQuestions(txtSearch.getText())));
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(QuestionsController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+        });
     }
 
     public void addChoice(ActionEvent action) {
@@ -95,5 +114,17 @@ public class QuestionsController implements Initializable {
         } catch (Exception ex) {
             MyAlert.getInstance().showMyAlert("Dữ liệu không hợp lệ!");
         }
+    }
+
+    private void loadColumns() {
+        TableColumn colId = new TableColumn("Id");
+        colId.setCellValueFactory(new PropertyValueFactory("id"));
+        colId.setPrefWidth(100);
+
+        TableColumn colContent = new TableColumn("Nội dung câu hỏi");
+        colContent.setCellValueFactory(new PropertyValueFactory("content"));
+        colContent.setPrefWidth(250);
+
+        this.tbQuestion.getColumns().addAll(colId, colContent);
     }
 }

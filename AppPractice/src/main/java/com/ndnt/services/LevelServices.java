@@ -4,7 +4,6 @@
  */
 package com.ndnt.services;
 
-import com.ndnt.pojo.Category;
 import com.ndnt.pojo.Level;
 import com.ndnt.utils.JdbcConnector;
 import java.sql.Connection;
