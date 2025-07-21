@@ -6,8 +6,8 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -42,6 +42,12 @@
                 <version>0.0.4</version>
                 <configuration>
                     <mainClass>com.ndnt.apppractice.App</mainClass>
+                     <options>
+                    <option>--module-path</option>
+                    <option>C:\Users\admin\Downloads\openjfx-24.0.1_windows-x64_bin-sdk\javafx-sdk-24.0.1\lib</option> <!-- đường dẫn thực tế của bạn -->
+                    <option>--add-modules</option>
+                    <option>javafx.controls,javafx.fxml</option>
+                </options>
                 </configuration>
                 <executions>
                     <execution>

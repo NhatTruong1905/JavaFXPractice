@@ -120,4 +120,13 @@ public class QuestionServices {
         return questions;
     }
 
+    public boolean deleteQuestion(int id) throws SQLException, ClassNotFoundException {
+        Connection conn = JdbcConnector.getInstance().connect();
+
+        PreparedStatement stm = conn.prepareCall("DELETE FROM question WHERE id=?");
+        stm.setInt(1, id);
+
+        return stm.executeUpdate() > 0;
+    }
+
 }

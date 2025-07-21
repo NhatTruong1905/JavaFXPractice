@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="Main" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ndnt.apppractice.PracticeController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Subject" text="BÀI THI" />
@@ -16,9 +15,9 @@
             <Button mnemonicParsing="false" onAction="#handleStart" text="Bắt đầu" />
          </children>
       </HBox>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
-      <VBox prefHeight="106.0" prefWidth="600.0" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+      <Text fx:id="txtContent" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+      <VBox fx:id="vboxChoice" prefHeight="106.0" prefWidth="600.0" style="-fx-alignment: CENTER_LEFT;" styleClass="Main" />
+      <Text fx:id="txtResult" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
       <HBox prefHeight="100.0" prefWidth="200.0" styleClass="Main">
          <children>
             <Button mnemonicParsing="false" onAction="#handleCheck" styleClass="Button" text="Kiểm tra đáp án" />

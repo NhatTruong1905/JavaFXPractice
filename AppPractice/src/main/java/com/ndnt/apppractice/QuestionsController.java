@@ -15,13 +15,16 @@ import com.ndnt.pojo.Category;
 import com.ndnt.pojo.Choice;
 import com.ndnt.pojo.Level;
 import com.ndnt.pojo.Question;
-import com.ndnt.services.CategoryServices;
-import com.ndnt.services.LevelServices;
-import com.ndnt.services.QuestionServices;
+import com.ndnt.utils.Configs;
 import com.ndnt.utils.MyAlert;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -53,18 +56,14 @@ public class QuestionsController implements Initializable {
     @FXML
     private TextField txtSearch;
 
-    private static final CategoryServices catServices = new CategoryServices();
-    private static final LevelServices levelServices = new LevelServices();
-    private static final QuestionServices questionServices = new QuestionServices();
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            this.cbCates.setItems(FXCollections.observableArrayList(catServices.getCates()));
-            this.cbLevels.setItems(FXCollections.observableArrayList(levelServices.getLevels()));
+            this.cbCates.setItems(FXCollections.observableArrayList(Configs.catServices.getCates()));
+            this.cbLevels.setItems(FXCollections.observableArrayList(Configs.levelServices.getLevels()));
 
             this.loadColumns();
-            this.tbQuestion.setItems(FXCollections.observableList(questionServices.getQuestions()));
+            this.tbQuestion.setItems(FXCollections.observableList(Configs.questionServices.getQuestions()));
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -72,7 +71,7 @@ public class QuestionsController implements Initializable {
         this.txtSearch.textProperty().addListener(c -> {
             try {
                 this.tbQuestion.getItems().clear();
-                this.tbQuestion.setItems(FXCollections.observableList(questionServices.getQuestions(txtSearch.getText())));
+                this.tbQuestion.setItems(FXCollections.observableList(Configs.questionServices.getQuestions(txtSearch.getText())));
             } catch (ClassNotFoundException | SQLException ex) {
                 Logger.getLogger(QuestionsController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
@@ -107,7 +106,7 @@ public class QuestionsController implements Initializable {
             }
 
             // Question q = b.build();
-            questionServices.addQuestion(b.build());
+            Configs.questionServices.addQuestion(b.build());
             MyAlert.getInstance().showMyAlert("Thêm câu hỏi thành công!");
         } catch (SQLException ex) {
             MyAlert.getInstance().showMyAlert("Thêm không thành công, lý do: " + ex.getMessage());
@@ -125,6 +124,34 @@ public class QuestionsController implements Initializable {
         colContent.setCellValueFactory(new PropertyValueFactory("content"));
         colContent.setPrefWidth(250);
 
-        this.tbQuestion.getColumns().addAll(colId, colContent);
+        TableColumn colAction = new TableColumn();
+        colAction.setCellFactory(c -> {
+            TableCell cell = new TableCell();
+
+            Button btn = new Button("Xóa");
+            btn.setOnAction(e -> {
+                Optional<ButtonType> t = MyAlert.getInstance().showMyAlert("Xóa câu hỏi thì các đáp án cũng bị xóa theo. Bạn chắc chắn không?", Alert.AlertType.CONFIRMATION);
+                if (t.isPresent() && t.get().equals(ButtonType.OK)) {
+                    Question q = (Question) cell.getTableRow().getItem();
+                    try {
+                        if (Configs.questionServices.deleteQuestion(q.getId()) == true) {
+                            this.tbQuestion.getItems().remove(q);
+                            MyAlert.getInstance().showMyAlert("Xóa câu hỏi thành công!", Alert.AlertType.INFORMATION);
+                        } else {
+                            MyAlert.getInstance().showMyAlert("Xóa câu hỏi thất bại!", Alert.AlertType.WARNING);
+                        }
+                    } catch (SQLException | ClassNotFoundException ex) {
+                        MyAlert.getInstance().showMyAlert("Hệ thống bị lỗi, lý do " + ex.getMessage(), Alert.AlertType.ERROR);
+                    }
+                }
+            });
+
+            cell.setGraphic(btn);
+
+            return cell;
+
+        });
+
+        this.tbQuestion.getColumns().addAll(colId, colContent, colAction);
     }
 }
