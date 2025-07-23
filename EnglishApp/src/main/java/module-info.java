@@ -5,4 +5,5 @@ module com.ndnt.englishapp {
 
     opens com.ndnt.englishapp to javafx.fxml;
     exports com.ndnt.englishapp;
+    exports com.ndnt.pojo;
 }

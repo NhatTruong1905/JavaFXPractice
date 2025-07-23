@@ -5,6 +5,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -14,30 +15,33 @@
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Subject" text="English Multiple Choice Test" />
       <TextArea fx:id="txtContent" prefHeight="54.0" prefWidth="579.0" promptText="Enter question content..." />
       <ComboBox fx:id="cbCates" prefWidth="150.0" />
-      <VBox prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="vboxChoice" prefHeight="200.0" prefWidth="100.0">
          <children>
             <HBox prefHeight="34.0" prefWidth="600.0">
                <children>
-                  <RadioButton fx:id="rdoA" mnemonicParsing="false" text="A" />
-                  <TextField fx:id="txtA" />
+                  <RadioButton mnemonicParsing="false" text="A">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="toggleChoice" />
+                     </toggleGroup></RadioButton>
+                  <TextField />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="600.0">
                <children>
-                  <RadioButton fx:id="rdoB" mnemonicParsing="false" text="B" />
-                  <TextField fx:id="txtB" />
+                  <RadioButton mnemonicParsing="false" text="B" toggleGroup="$toggleChoice" />
+                  <TextField />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="600.0">
                <children>
-                  <RadioButton fx:id="rdoC" mnemonicParsing="false" text="C" />
-                  <TextField fx:id="txtC" />
+                  <RadioButton mnemonicParsing="false" text="C" toggleGroup="$toggleChoice" />
+                  <TextField />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="600.0">
                <children>
-                  <RadioButton fx:id="rdoD" mnemonicParsing="false" text="D" />
-                  <TextField fx:id="txtD" />
+                  <RadioButton mnemonicParsing="false" text="D" toggleGroup="$toggleChoice" />
+                  <TextField />
                </children>
             </HBox>
          </children>

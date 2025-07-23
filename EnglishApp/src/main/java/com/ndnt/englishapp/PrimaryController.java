@@ -1,7 +1,10 @@
 package com.ndnt.englishapp;
 
 import com.ndnt.pojo.Category;
-import com.ndnt.services.CategoryServices;
+import com.ndnt.pojo.Choice;
+import com.ndnt.pojo.Question;
+import com.ndnt.utils.Configs;
+import com.ndnt.utils.MyAlert;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -13,42 +16,54 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class PrimaryController implements Initializable {
 
     @FXML
     private ComboBox<Category> cbCates;
     @FXML
-    private TextField txtContent;
+    private TextArea txtContent;
     @FXML
-    private TextField txtA;
+    private VBox vboxChoice;
     @FXML
-    private TextField txtB;
-    @FXML
-    private TextField txtC;
-    @FXML
-    private TextField txtD;
-    @FXML
-    private RadioButton rdoA;
-    @FXML
-    private RadioButton rdoB;
-    @FXML
-    private RadioButton rdoC;
-    @FXML
-    private RadioButton rdoD;
-    private static final CategoryServices categoryServices = new CategoryServices();
+    ToggleGroup toggleChoice;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            this.cbCates.setItems(FXCollections.observableArrayList(categoryServices.getCates()));
+            this.cbCates.setItems(FXCollections.observableArrayList(Configs.categoryServices.getCates()));
         } catch (SQLException ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void addQuestion(ActionEvent action) {
+        try {
+            Question.Builder b = new Question.Builder(txtContent.getText(),
+                    cbCates.getSelectionModel().getSelectedItem());
+
+            for (var c : vboxChoice.getChildren()) {
+                HBox h = (HBox) c;
+                RadioButton rdo = (RadioButton) h.getChildren().get(0);
+                rdo.setToggleGroup(toggleChoice);
+                Choice choice = new Choice(((TextField) h.getChildren().get(1)).getText(),
+                        rdo.isSelected());
+
+                b.addChoice(choice);
+            }
+
+            Configs.questionServices.addQuestion(b.build());
+            MyAlert.getInstance().showAlert("Thêm câu hỏi thành công!");
+        } catch (SQLException ex) {
+            MyAlert.getInstance().showAlert("Thêm dữ liệu không thành công, lý do " + ex.getMessage());
+        } catch (Exception ex) {
+            MyAlert.getInstance().showAlert("Dữ liệu không hợp lệ!!!");
+        }
 
     }
 
