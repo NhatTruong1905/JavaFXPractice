@@ -16,7 +16,7 @@ public class Question {
     private int id;
     private String content;
     private Category category;
-    private List<Choice> choices;
+    private List<Choice> choices = new ArrayList<>();
 
     private Question(Builder b) {
         this.id = b.id;
@@ -32,9 +32,19 @@ public class Question {
         private Category category;
         private List<Choice> choices = new ArrayList<>();
 
-        public Builder(String content, Category category) {
+        public Builder(int id, String content) {
+            this.id = id;
             this.content = content;
+        }
+
+        public Builder(String content, Category category) {
             this.category = category;
+            this.content = content;
+        }
+
+        public Builder addCategory(Category cate) {
+            this.category = cate;
+            return this;
         }
 
         public Builder addChoice(Choice c) {

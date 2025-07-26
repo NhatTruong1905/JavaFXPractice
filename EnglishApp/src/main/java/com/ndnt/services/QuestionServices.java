@@ -4,12 +4,16 @@
  */
 package com.ndnt.services;
 
+import com.ndnt.pojo.Category;
 import com.ndnt.pojo.Question;
 import com.ndnt.utils.JdbcConnector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,6 +48,22 @@ public class QuestionServices {
         } else {
             conn.rollback();
         }
+    }
+
+    public List<Question> getQuestion(String kw) throws SQLException {
+        Connection conn = JdbcConnector.getInstance().connect();
+
+        PreparedStatement stm = conn.prepareCall("SELECT * FROM question WHERE content like concat('%',?,'%')");
+        stm.setString(1, kw);
+
+        ResultSet rs = stm.executeQuery();
+
+        List<Question> questions = new ArrayList<>();
+        while (rs.next()) {
+            questions.add(new Question.Builder(rs.getInt("id"), rs.getString("content")).build());
+        }
+
+        return questions;
 
     }
 }
