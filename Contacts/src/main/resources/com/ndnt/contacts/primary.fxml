@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="600.0" styleClass="Main" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ndnt.contacts.PrimaryController">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Subject" text="CONTACTS" />
+      <HBox prefHeight="17.0" prefWidth="600.0" styleClass="Main">
+         <children>
+            <TextField fx:id="txtUser" promptText="Nhập tên người dùng..." />
+            <TextField fx:id="txtPhone" promptText="Nhập số điện thoại..." />
+         </children>
+      </HBox>
+      <HBox prefHeight="6.0" prefWidth="600.0" styleClass="Main">
+         <children>
+            <ComboBox fx:id="cbGroups" prefWidth="150.0" styleClass="Button" />
+         </children>
+      </HBox>
+      <Button mnemonicParsing="false" onAction="#addHandle" styleClass="Button" text="Thêm vào danh bạ" />
+      <HBox styleClass="Main">
+         <children>
+            <TextField fx:id="txtSearch" promptText="Nhập từ cần tìm..." />
+            <ComboBox fx:id="cbGroupSearch" prefWidth="150.0" styleClass="Button" />
+         </children>
+      </HBox>
+      <TableView fx:id="tvUsers" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</VBox>
