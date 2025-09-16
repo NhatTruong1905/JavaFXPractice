@@ -6,9 +6,15 @@ import com.ndnt.services.format.BaseFormatService;
 import com.ndnt.services.format.BoldFormatDecorator;
 import com.ndnt.services.format.FormatService;
 import com.ndnt.services.format.ItalicFormatDecorator;
+import com.ndnt.theme.DarkThemeFactory;
+import com.ndnt.theme.DefaultThemeFactory;
+import com.ndnt.theme.LightThemeFactory;
+import com.ndnt.theme.Theme;
+import com.ndnt.theme.ThemeManager;
 import com.ndnt.utils.FlyweightFactory;
 import com.ndnt.utils.MyAlert;
 import com.ndnt.utils.MyConfig;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -47,6 +53,8 @@ public class PrimaryController implements Initializable {
     CheckBox ckItalic;
     @FXML
     TextFlow txtFormatNote;
+    @FXML
+    ComboBox<Theme> cbThemes;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -55,9 +63,15 @@ public class PrimaryController implements Initializable {
 
             this.loadColumns();
             this.tbNote.setItems(FXCollections.observableArrayList(FlyweightFactory.getData(MyConfig.noteService, "notes")));
+
+            this.cbThemes.setItems(FXCollections.observableArrayList(Theme.values()));
         } catch (Exception ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void changeThemeHandle(ActionEvent action) throws IOException {
+        this.cbThemes.getSelectionModel().getSelectedItem().updateTheme(this.cbThemes.getScene());
     }
 
     public void addHandle(ActionEvent action) {

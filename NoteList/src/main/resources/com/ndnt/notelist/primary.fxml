@@ -44,6 +44,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#viewSelectedNote" styleClass="Button" text="Xem định dạng" />
             <TextFlow fx:id="txtFormatNote" prefHeight="98.0" prefWidth="268.0" styleClass="TextFlow" textAlignment="CENTER" />
+            <ComboBox fx:id="cbThemes" onAction="#changeThemeHandle" prefWidth="150.0" styleClass="Button" />
          </children>
       </HBox>
    </children>
