@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -35,9 +36,9 @@ public class PrimaryController implements Initializable {
     @FXML
     TextField txtTitle;
     @FXML
-    TextField txtDate;
-    @FXML
     TextArea txtContent;
+    @FXML
+    DatePicker dateChoice;
     @FXML
     TableView<Note> tbNote;
     @FXML
@@ -50,10 +51,10 @@ public class PrimaryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            this.cbTag.setItems(FXCollections.observableArrayList(FlyweightFactory.getDate(MyConfig.tagServices, "tags")));
+            this.cbTag.setItems(FXCollections.observableArrayList(FlyweightFactory.getData(MyConfig.tagServices, "tags")));
 
             this.loadColumns();
-            this.tbNote.setItems(FXCollections.observableArrayList(FlyweightFactory.getDate(MyConfig.noteService, "notes")));
+            this.tbNote.setItems(FXCollections.observableArrayList(FlyweightFactory.getData(MyConfig.noteService, "notes")));
         } catch (Exception ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,7 +62,7 @@ public class PrimaryController implements Initializable {
 
     public void addHandle(ActionEvent action) {
         try {
-            Note n = new Note(txtTitle.getText(), txtContent.getText(), txtDate.getText(), cbTag.getSelectionModel().getSelectedItem());
+            Note n = new Note(txtTitle.getText(), txtContent.getText(), dateChoice.getValue().toString(), cbTag.getSelectionModel().getSelectedItem());
 
             BaseFormatService s = new FormatService();
             if (ckBold.isSelected()) {
@@ -146,5 +147,4 @@ public class PrimaryController implements Initializable {
         txtFormatNote.getChildren().add(contentLabel);
     }
 
-    
 }

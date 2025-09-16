@@ -17,7 +17,7 @@ public class FlyweightFactory {
 
     private static final Map<String, List> catchedData = new HashMap<>();
 
-    public static <E> List<E> getDate(BaseServices s, String key) throws Exception {
+    public static <E> List<E> getData(BaseServices s, String key) throws Exception {
         if (catchedData.containsKey(key) == true) {
             return catchedData.get(key);
         } else {

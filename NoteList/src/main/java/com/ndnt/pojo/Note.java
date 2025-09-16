@@ -4,8 +4,6 @@
  */
 package com.ndnt.pojo;
 
-import java.time.LocalDate;
-
 /**
  *
  * @author admin
@@ -18,11 +16,11 @@ public class Note {
     private String date;
     private Tag tag;
 
-    public Note(int id, String title, String content, String dated) {
+    public Note(int id, String title, String content, String date) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.date = dated;
+        this.date = date;
     }
 
     public Note(String title, String content, String date, Tag tag) throws Exception {

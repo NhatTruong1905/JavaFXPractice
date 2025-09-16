@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -18,14 +19,14 @@
       <HBox prefHeight="0.0" prefWidth="579.0" styleClass="Main">
          <children>
             <TextField fx:id="txtTitle" promptText="Nhập tiêu đề... " />
-            <TextField fx:id="txtDate" promptText="Nhập ngày..." />
             <ComboBox fx:id="cbTag" prefWidth="150.0" promptText="Tag" styleClass="Button" />
+            <DatePicker fx:id="dateChoice" />
          </children>
       </HBox>
       <TextArea fx:id="txtContent" prefHeight="58.0" prefWidth="600.0" promptText="Nhập nội dung ghi chú..." />
       <HBox styleClass="Main">
          <children>
-            <Button mnemonicParsing="false" onAction="#addHandle" styleClass="Button" text="Thêm ghi chú" />
+            <Button mnemonicParsing="false" onAction="#addHandle" styleClass="Button" text="Lưu ghi chú" />
             <CheckBox fx:id="ckBold" mnemonicParsing="false" text="Bold" textFill="#fcfcfc">
                <font>
                   <Font size="15.0" />
@@ -41,7 +42,6 @@
       <TableView fx:id="tbNote" prefHeight="285.0" prefWidth="681.0" />
       <HBox prefHeight="153.0" prefWidth="581.0" styleClass="Main">
          <children>
-            <Button mnemonicParsing="false" styleClass="Button" text="Lưu ghi chú theo ngày" />
             <Button mnemonicParsing="false" onAction="#viewSelectedNote" styleClass="Button" text="Xem định dạng" />
             <TextFlow fx:id="txtFormatNote" prefHeight="98.0" prefWidth="268.0" styleClass="TextFlow" textAlignment="CENTER" />
          </children>
