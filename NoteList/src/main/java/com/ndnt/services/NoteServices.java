@@ -46,4 +46,25 @@ public class NoteServices extends BaseServices<Note> {
         stm.executeUpdate();
     }
 
+    public boolean deleteNote(Note n) throws SQLException {
+        Connection conn = DatabaseConnection.getInstance().connect();
+
+        PreparedStatement stm = conn.prepareCall("DELETE FROM note WHERE id=?");
+        stm.setInt(1, n.getId());
+
+        return stm.executeUpdate() > 0;
+    }
+
+    public boolean updateNote(Note n) throws SQLException {
+        Connection conn = DatabaseConnection.getInstance().connect();
+
+        PreparedStatement stm = conn.prepareCall("UPDATE note SET title=?, content=?, date=?, tag_id=? WHERE id=?");
+        stm.setString(1, n.getTitle());
+        stm.setString(2, n.getContent());
+        stm.setString(3, n.getDated());
+        stm.setInt(4, n.getTag().getId());
+        stm.setInt(5, n.getId());
+
+        return stm.executeUpdate() > 0;
+    }
 }

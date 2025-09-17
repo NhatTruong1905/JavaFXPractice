@@ -37,6 +37,7 @@
                   <Font size="15.0" />
                </font>
             </CheckBox>
+            <Button mnemonicParsing="false" onAction="#updateNote" styleClass="Button" text="Sửa thông tin" />
          </children>
       </HBox>
       <TableView fx:id="tbNote" prefHeight="285.0" prefWidth="681.0" />

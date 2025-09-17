@@ -6,16 +6,14 @@ import com.ndnt.services.format.BaseFormatService;
 import com.ndnt.services.format.BoldFormatDecorator;
 import com.ndnt.services.format.FormatService;
 import com.ndnt.services.format.ItalicFormatDecorator;
-import com.ndnt.theme.DarkThemeFactory;
-import com.ndnt.theme.DefaultThemeFactory;
-import com.ndnt.theme.LightThemeFactory;
 import com.ndnt.theme.Theme;
-import com.ndnt.theme.ThemeManager;
 import com.ndnt.utils.FlyweightFactory;
 import com.ndnt.utils.MyAlert;
 import com.ndnt.utils.MyConfig;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +21,9 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -89,6 +90,7 @@ public class PrimaryController implements Initializable {
             n.setContent(formatContent);
 
             MyConfig.noteService.addNote(n);
+            this.tbNote.getItems().add(n);
             MyAlert.getInstance().show("Thêm ghi chú thành công");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -129,7 +131,35 @@ public class PrimaryController implements Initializable {
                 }
             }
         });
-        this.tbNote.getColumns().addAll(colTitle, colContent);
+
+        TableColumn colAction = new TableColumn();
+        colAction.setCellFactory(a -> {
+            TableCell cell = new TableCell();
+
+            Button btn = new Button("Xóa");
+            btn.setOnAction(e -> {
+                Optional<ButtonType> t = MyAlert.getInstance().show("Bạn có chắc chắn xóa không ?", Alert.AlertType.CONFIRMATION);
+                if (t.isPresent() && t.get() == ButtonType.OK) {
+                    Note n = (Note) cell.getTableRow().getItem();
+                    try {
+                        if (MyConfig.noteService.deleteNote(n) == true) {
+                            this.tbNote.getItems().remove(n);
+                            MyAlert.getInstance().show("Xóa ghi chú thành công !", Alert.AlertType.INFORMATION);
+                        } else {
+                            MyAlert.getInstance().show("Xóa ghi chú thất bại !!!", Alert.AlertType.WARNING);
+                        }
+                    } catch (SQLException ex) {
+                        MyAlert.getInstance().show("Dữ liệu không chính xác, lý do: " + ex.getMessage(), Alert.AlertType.ERROR);
+                    }
+                }
+            });
+
+            cell.setGraphic(btn);
+
+            return cell;
+        });
+
+        this.tbNote.getColumns().addAll(colTitle, colContent, colAction);
     }
 
     public void viewSelectedNote(ActionEvent action) {
@@ -161,4 +191,23 @@ public class PrimaryController implements Initializable {
         txtFormatNote.getChildren().add(contentLabel);
     }
 
+    public void updateNote(ActionEvent action) throws SQLException {
+        Note n = this.tbNote.getSelectionModel().getSelectedItem();
+        try {
+            if (n != null) {
+                Optional<ButtonType> t = MyAlert.getInstance().show("Bạn có chắc muốn sửa không ?", Alert.AlertType.CONFIRMATION);
+                if (t.isPresent() && t.get() == ButtonType.OK) {
+                    n.setContent(txtContent.getText());
+                    n.setTitle(txtTitle.getText());
+                    n.setDated(dateChoice.getValue().toString());
+                    n.setTag(cbTag.getSelectionModel().getSelectedItem());
+
+                    MyConfig.noteService.updateNote(n);
+                    MyAlert.getInstance().show("Cập nhập ghi chú thành công", Alert.AlertType.INFORMATION);
+                }
+            }
+        } catch (Exception ex) {
+            MyAlert.getInstance().show("Dữ liệu không chính xác, lý do: " + ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
 }
